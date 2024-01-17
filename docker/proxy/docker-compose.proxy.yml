@@ -1,0 +1,14 @@
+version: '2.3'
+services:
+  proxy:
+    image: nginx:1.24.0
+    volumes:
+      - ${NGINX_ROOT_DIR:-.}/volumes/proxy/:/etc/nginx/conf.d/
+    networks:
+      - nginx-network
+    ports:
+      - 80:80
+networks:
+  nginx-network:
+    external:
+      name: share-exchange

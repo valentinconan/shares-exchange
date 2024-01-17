@@ -1,0 +1,33 @@
+version: '2.3'
+services:
+  db:
+    container_name: db
+    image: postgres:11
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./volumes:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - backend-network
+  nest-api:
+    hostname: nest-api
+    image: valentinconan/share-backend-api-native:master
+    restart: unless-stopped
+    environment:
+      - ENTITY_PATH=dist/**/**/*.entity.ts
+      - DB_URL=postgres://postgres:password@db:5432/nest
+    healthcheck:
+      test: wget -O /dev/null http://localhost:3000/health || exit 1
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3000:3000"
+    networks:
+      - backend-network
+networks:
+  backend-network:
+    external:
+      name: share-exchange
