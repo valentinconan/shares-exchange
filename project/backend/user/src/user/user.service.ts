@@ -24,8 +24,14 @@ export class UserService {
         return `This action returns all user`;
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} user`;
+    async findOne(login: string) {
+        return this.userRepository.findOne({where: {login}})
+    }
+
+    async validateUser(login: string, password: string) {
+        //generate hash in order to compare with the one stored in DB
+        let hash = this.passwordService.hash(password)
+        return this.userRepository.findOne({where: {login, hash}})
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {
