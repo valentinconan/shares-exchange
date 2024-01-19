@@ -7,11 +7,11 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {PasswordService} from './utils/service/password/password.service';
 import {EnvironmentService} from "./utils/service/environment/environment.service";
 
+
 @Module({
     imports: [
         TypeOrmModule.forRoot(config),
-        UserModule
-    ],
+        UserModule],
     controllers: [AppController],
     providers: [AppService, EnvironmentService, PasswordService],
 })
