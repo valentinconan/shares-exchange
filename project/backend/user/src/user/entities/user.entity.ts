@@ -1,19 +1,23 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Right} from "./rights.entity";
 
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id:number
+    id: number
 
     @Column()
-    lastName:string
+    lastName: string
 
     @Column()
-    firstName:string
+    firstName: string
 
-    @Column({nullable:false, unique: true})
-    login:string
+    @Column({nullable: false, unique: true})
+    login: string
 
     @Column()
-    hash:string
+    hash: string
+
+    @OneToMany(() => Right, (right) => right.user, {cascade: true})
+    rights: Right[]
 }

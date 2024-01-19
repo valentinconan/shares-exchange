@@ -2,6 +2,7 @@ import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common'
 import {UserService} from '../services/user.service';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {UpdateUserDto} from '../dto/update-user.dto';
+import {Right} from "../entities/rights.entity";
 
 @Controller('user')
 export class UserController {
@@ -31,5 +32,10 @@ export class UserController {
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.userService.remove(+id);
+    }
+
+    @Get('/rights/:login')
+    async retrieveRights(@Param('login') login: string): Promise<Right[]> {
+        return await this.userService.retrieveRights(login)
     }
 }
