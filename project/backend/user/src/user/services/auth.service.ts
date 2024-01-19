@@ -21,7 +21,7 @@ export class AuthService {
             await this.jwtService.verifyAsync(token)
             isValid = true;
         } catch (e) {
-            console.error("JWT token is not valid")
+            console.error("JWT token is not valid " + e)
         }
 
         return isValid;

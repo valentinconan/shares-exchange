@@ -8,6 +8,7 @@ import {PasswordService} from "../utils/service/password/password.service";
 import {LoginController} from "./controllers/login.controller";
 import {AuthService} from "./services/auth.service";
 import {JwtModule} from '@nestjs/jwt';
+import {ValidateTokenController} from './controllers/validate-token.controller';
 
 @Module({
     imports: [TypeOrmModule.forFeature([User]),
@@ -15,7 +16,7 @@ import {JwtModule} from '@nestjs/jwt';
             secret: process.env.JWT_SECRET ?? '0f3f14ca-396c-4ef0-beb7-af1e789c361b',
             signOptions: {expiresIn: '1h'},
         }),],
-    controllers: [UserController, LoginController],
+    controllers: [UserController, LoginController, ValidateTokenController],
     providers: [UserService, EnvironmentService, PasswordService, AuthService],
 })
 export class UserModule {
