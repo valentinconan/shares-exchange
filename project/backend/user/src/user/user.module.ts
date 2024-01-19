@@ -1,12 +1,12 @@
 import {Module} from '@nestjs/common';
-import {UserService} from './user.service';
-import {UserController} from './user.controller';
+import {UserService} from './services/user.service';
+import {UserController} from './controllers/user.controller';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "./entities/user.entity";
 import {EnvironmentService} from "../utils/service/environment/environment.service";
 import {PasswordService} from "../utils/service/password/password.service";
-import {LoginController} from "./login/login.controller";
-import {AuthService} from "./auth.service";
+import {LoginController} from "./controllers/login.controller";
+import {AuthService} from "./services/auth.service";
 import {JwtModule} from '@nestjs/jwt';
 
 @Module({
