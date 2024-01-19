@@ -2,6 +2,11 @@
 
 Share exchange allows all employee to consult, buy or sell shares. 
 
+## Todo
+- Jest
+- CI/CD
+- cypress
+
 ## How to use it ?
 
 In order to build project, launch the utility script `build.sh` using bash.
