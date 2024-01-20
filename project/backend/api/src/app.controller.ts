@@ -15,7 +15,7 @@ export class AppController {
 
     @Get("/liveness")
     @HttpCode(200)
-    //todo vco uncomment @SkipJwt()
+    @SkipJwt()
     async liveness() {
         if (!this.appService.live()) {
             throw new HttpException('Not alive', HttpStatus.BAD_REQUEST);
