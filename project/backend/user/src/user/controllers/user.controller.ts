@@ -3,6 +3,7 @@ import {UserService} from '../services/user.service';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {UpdateUserDto} from '../dto/update-user.dto';
 import {Right} from "../entities/rights.entity";
+import {User} from "../entities/user.entity";
 
 @Controller('user')
 export class UserController {
@@ -10,8 +11,15 @@ export class UserController {
     }
 
     @Post()
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+
+        let user: User = await this.userService.create(createUserDto);
+
+        //remove sensitive data from response
+        delete user['hash']
+        delete user['id']
+        
+        return user;
     }
 
     @Get()

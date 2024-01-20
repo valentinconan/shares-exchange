@@ -15,10 +15,10 @@ export class UserService {
 
     }
 
-    create(createUserDto: CreateUserDto) {
+    async create(createUserDto: CreateUserDto) {
         console.log(JSON.stringify(createUserDto))
         createUserDto['hash'] = this.passwordService.hash("default")
-        return this.userRepository.save(createUserDto);
+        return await this.userRepository.save(createUserDto);
     }
 
     findAll() {

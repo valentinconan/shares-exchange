@@ -23,6 +23,6 @@ export class LoginController {
             jwtToken = await this.authService.generateJwtToken(user);
         }
 
-        return jwtToken
+        return {token: jwtToken}
     }
 }
