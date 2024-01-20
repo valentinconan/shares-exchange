@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {User} from "./user.entity";
 
 @Entity()
@@ -9,6 +9,6 @@ export class Right {
     @Column()
     name: string;
 
-    @ManyToOne(() => User, (user) => user.rights)
+    @ManyToOne(() => User)
     user: User;
 }
