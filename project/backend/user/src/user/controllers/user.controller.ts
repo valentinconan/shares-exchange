@@ -2,6 +2,8 @@ import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common'
 import {UserService} from '../services/user.service';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {UpdateUserDto} from '../dto/update-user.dto';
+import {Right} from "../entities/rights.entity";
+import {User} from "../entities/user.entity";
 
 @Controller('user')
 export class UserController {
@@ -9,8 +11,15 @@ export class UserController {
     }
 
     @Post()
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+
+        let user: User = await this.userService.create(createUserDto);
+
+        //remove sensitive data from response
+        delete user['hash']
+        delete user['id']
+        
+        return user;
     }
 
     @Get()
@@ -31,5 +40,10 @@ export class UserController {
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.userService.remove(+id);
+    }
+
+    @Get('/rights/:login')
+    async retrieveRights(@Param('login') login: string): Promise<Right[]> {
+        return await this.userService.retrieveRights(login)
     }
 }

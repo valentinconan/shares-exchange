@@ -5,6 +5,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {User} from "../entities/user.entity";
 import {Repository} from "typeorm";
 import {PasswordService} from "../../utils/service/password/password.service";
+import {Right} from "../entities/rights.entity";
 
 @Injectable()
 export class UserService {
@@ -14,10 +15,10 @@ export class UserService {
 
     }
 
-    create(createUserDto: CreateUserDto) {
+    async create(createUserDto: CreateUserDto) {
         console.log(JSON.stringify(createUserDto))
         createUserDto['hash'] = this.passwordService.hash("default")
-        return this.userRepository.save(createUserDto);
+        return await this.userRepository.save(createUserDto);
     }
 
     findAll() {
@@ -40,5 +41,20 @@ export class UserService {
 
     remove(id: number) {
         return `This action removes a #${id} user`;
+    }
+
+    async retrieveRights(login: string): Promise<Right[]> {
+        let rights: Right[];
+        console.log(login)
+        let user: User = await this.userRepository.findOne({
+            where: {login}, relations: {
+                rights: true
+            }
+        },)
+        console.log(JSON.stringify(user))
+        if (user) {
+            rights = user.rights
+        }
+        return rights;
     }
 }
