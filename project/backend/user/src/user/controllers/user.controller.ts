@@ -18,7 +18,7 @@ export class UserController {
         //remove sensitive data from response
         delete user['hash']
         delete user['id']
-        
+
         return user;
     }
 

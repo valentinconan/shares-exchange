@@ -9,9 +9,10 @@ import {LoginController} from "./controllers/login.controller";
 import {AuthService} from "./services/auth.service";
 import {JwtModule} from '@nestjs/jwt';
 import {ValidateTokenController} from './controllers/validate-token.controller';
+import {Right} from "./entities/rights.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]),
+    imports: [TypeOrmModule.forFeature([User, Right]),
         JwtModule.register({
             secret: process.env.JWT_SECRET ?? '0f3f14ca-396c-4ef0-beb7-af1e789c361b',
             signOptions: {expiresIn: '1h'},

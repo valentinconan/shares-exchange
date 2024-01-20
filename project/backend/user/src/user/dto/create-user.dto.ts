@@ -1,15 +1,15 @@
-
 export class CreateUserDto {
 
-    constructor(lastName:string,fistName:string,login:string) {
-        this.fistName=fistName
-        this.lastName=lastName
-        this.login=login
+    constructor(lastName: string, firstName: string, login: string, rights: string[]) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.login = login
+        this.rights = rights
     }
 
-    lastName:string
+    lastName: string
+    firstName: string
+    login: string
+    rights: string[]
 
-    fistName:string
-
-    login:string
 }
