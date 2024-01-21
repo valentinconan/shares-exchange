@@ -6,6 +6,7 @@ import {ShareHolder} from "../entities/shareholder.entity";
 import {Order} from "../entities/order.entity";
 import {Holding} from "../entities/holding.entity";
 import {OrderDto} from "../dto/order.dto";
+import {Wallet} from "../entities/wallet.entity";
 
 @Injectable()
 export class OrdersService {
@@ -23,7 +24,6 @@ export class OrdersService {
         //if something crash, nothing will be committed
         return this.entityManager.transaction(async transactionalEntityManager => {
 
-//todo update holdings and share
             //action must be sell or buy
             if (action !== "sell" && action !== "buy") {
                 throw new BadRequestException()
@@ -41,6 +41,7 @@ export class OrdersService {
                 }
             });
             order.share = share;
+            //todo vco check here if share.quantity is enought
             order.amount = orderDto.quantity * share.price
             order.purchasePrice = share.price
 
@@ -59,6 +60,48 @@ export class OrdersService {
             }
             //update share quantity
             await transactionalEntityManager.update(Share, share.id, {quantity: share.quantity});
+
+
+            let wallet = await transactionalEntityManager.createQueryBuilder(Wallet, 'wallet')
+                .innerJoinAndSelect('wallet.shareHolder', 'shareHolder')
+                .innerJoinAndSelect('wallet.holdings', 'holdings')
+                .where('shareHolder.login = :login', {login: userLogin})
+                .getOne();
+
+            console.log(JSON.stringify(wallet))
+            if (!wallet) {
+                wallet = new Wallet();
+                wallet.shareHolder = shareHolder
+
+                let holding = new Holding()
+
+                holding.shareName = orderDto.shareName;
+                holding.quantity = orderDto.quantity
+
+                wallet.holdings = [holding]
+                console.log(JSON.stringify(holding))
+                await transactionalEntityManager.save(Wallet, wallet)
+            } else {
+
+                let targetShare = wallet.holdings
+                    .find(s => s.shareName === orderDto.shareName)
+                if (!targetShare) {
+                    let holding = new Holding()
+                    holding.shareName = orderDto.shareName;
+                    holding.quantity = orderDto.quantity
+                    wallet.holdings.push(holding)
+                    await transactionalEntityManager.save(Wallet, wallet)
+                } else {
+
+                    if (action === "buy") {
+                        targetShare.quantity += orderDto.quantity
+                    } else {
+                        targetShare.quantity -= orderDto.quantity
+                    }
+                    await transactionalEntityManager.save(Wallet, wallet)
+                }
+            }
+
 
             return await transactionalEntityManager.save(Order, order);
         })
