@@ -1,4 +1,4 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {ShareHolder} from "./shareholder.entity";
 import {Share} from "./share.entity";
 
@@ -7,10 +7,12 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToOne(() => ShareHolder)
+    @ManyToOne(() => ShareHolder)
+    @JoinColumn()
     shareHolder: ShareHolder
 
-    @OneToOne(() => Share)
+    @ManyToOne(() => Share)
+    @JoinColumn()
     share: Share
 
     @Column()
@@ -25,4 +27,6 @@ export class Order {
     @Column()
     date: Date
 
+    @Column()
+    purchasePrice: number
 }
