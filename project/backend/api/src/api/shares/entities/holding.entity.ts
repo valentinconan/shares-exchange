@@ -1,6 +1,4 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {ShareHolder} from "./shareholder.entity";
-import {Share} from "./share.entity";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity()
 export class Holding {
@@ -8,11 +6,8 @@ export class Holding {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToOne(() => ShareHolder)
-    shareHolder: ShareHolder
-
-    @OneToOne(() => Share)
-    share: Share
+    @Column()
+    shareName: string
 
     @Column()
     quantity: number
