@@ -40,8 +40,10 @@ export class OrdersService {
                     name: orderDto.shareName
                 }
             });
+            //todo vco manage exception if share does not exist
             order.share = share;
-            //todo vco check here if share.quantity is enought
+            //todo vco check here if share.quantity is enough to be bought
+            //todo vco check if wallet quantity is enough to be sold
             order.amount = orderDto.quantity * share.price
             order.purchasePrice = share.price
 
@@ -57,6 +59,8 @@ export class OrdersService {
             //if shareHolder buy share, decrease share available quantity
             if (action === "buy") {
                 share.quantity -= orderDto.quantity
+            } else {
+                share.quantity += orderDto.quantity
             }
             //update share quantity
             await transactionalEntityManager.update(Share, share.id, {quantity: share.quantity});
