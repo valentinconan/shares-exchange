@@ -6,6 +6,8 @@ import config from "../ormconfig";
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {PasswordService} from './utils/service/password/password.service';
 import {EnvironmentService} from "./utils/service/environment/environment.service";
+import {APP_FILTER} from "@nestjs/core";
+import {ErrorHandlerFilter} from "./filters/error-handler/error-handler.filter";
 
 
 @Module({
@@ -13,7 +15,10 @@ import {EnvironmentService} from "./utils/service/environment/environment.servic
         TypeOrmModule.forRoot(config),
         UserModule],
     controllers: [AppController],
-    providers: [AppService, EnvironmentService, PasswordService],
+    providers: [{
+        provide: APP_FILTER,
+        useClass: ErrorHandlerFilter
+    }, AppService, EnvironmentService, PasswordService],
 })
 export class AppModule {
 }

@@ -19,8 +19,6 @@ export class LoginController {
 
         let jwtToken = undefined;
         if (user) {
-            console.log(`User with login ${login} is logged [${JSON.stringify(user)}]`)
-
             //generate jwt
             jwtToken = await this.authService.generateJwtToken(user);
         }
