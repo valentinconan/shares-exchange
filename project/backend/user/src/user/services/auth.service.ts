@@ -7,13 +7,27 @@ export class AuthService {
     constructor(private readonly jwtService: JwtService) {
     }
 
+    /**
+     * Generate and sign jwt token using user login and rights
+     * @param user
+     * @return a jwt token
+     */
     async generateJwtToken(user: User): Promise<string> {
         //include data into payload
-        const payload = {sub: user.login};
+        const payload =
+            {
+                sub: user.login,
+                claims: user.rights.map(right => right.name)
+            };
         // generate token
         return await this.jwtService.signAsync(payload);
     }
 
+    /**
+     * verify token
+     * @param token
+     * @return boolean, true if token is valid, false otherwise
+     */
     async verifyJwtToken(token: string): Promise<boolean> {
         let isValid = false;
 
@@ -25,5 +39,14 @@ export class AuthService {
         }
 
         return isValid;
+    }
+
+    /**
+     * Extract payload from token
+     * @param jwt
+     * @return the payload
+     */
+    extractPayload(jwt: string) {
+        return this.jwtService.decode(jwt)
     }
 }

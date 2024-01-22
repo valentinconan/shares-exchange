@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Patch, Post} from '@nestjs/common';
 import {UserService} from '../services/user.service';
 import {CreateUserDto} from '../dto/create-user.dto';
 import {UpdateUserDto} from '../dto/update-user.dto';
@@ -16,20 +16,29 @@ export class UserController {
         let user: User = await this.userService.create(createUserDto);
 
         //remove sensitive data from response
-        delete user['hash']
-        delete user['id']
+        delete user.hash
+        delete user.id
 
         return user;
     }
 
     @Get()
-    findAll() {
-        return this.userService.findAll();
+    async findAll() {
+        let users = await this.userService.findAll();
+        users.forEach((user) => {
+            delete user.hash
+            delete user.id
+        })
+        return users
     }
 
     @Get(':name')
-    findOne(@Param('name') name: string) {
-        return this.userService.findOne(name);
+    async findOne(@Param('name') name: string) {
+
+        let user = await this.userService.findOne(name);
+        delete user.hash
+        delete user.id
+        return user
     }
 
     @Patch(':id')
@@ -42,6 +51,7 @@ export class UserController {
         return this.userService.remove(+id);
     }
 
+    //todo vco admin ROle
     @Get('/rights/:login')
     async retrieveRights(@Param('login') login: string): Promise<Right[]> {
         return await this.userService.retrieveRights(login)

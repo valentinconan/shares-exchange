@@ -11,7 +11,10 @@ export class ValidateTokenController {
 
     @Post()
     async validateToken(@Body() token: TokenDto): Promise<any> {
-        return {valid: await this.authService.verifyJwtToken(token.token)}
+
+        let valid: boolean = await this.authService.verifyJwtToken(token.token)
+
+        return {valid, payload: this.authService.extractPayload(token.token)}
     }
 }
 
