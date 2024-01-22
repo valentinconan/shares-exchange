@@ -15,9 +15,9 @@ export class JwtGuard implements CanActivate {
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
 
-        const skipAuth = this.reflector.get<boolean>("skip-jwt", context.getHandler());
+        const publicDecorator = this.reflector.get<boolean>("public", context.getHandler());
 
-        if (skipAuth) {
+        if (publicDecorator) {
             // Exclude this call from guard validation
             return true;
         }
