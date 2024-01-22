@@ -47,17 +47,25 @@ export class UserService {
     }
 
     findAll() {
-        return `This action returns all user`;
+        return this.userRepository.find();
     }
 
     async findOne(login: string): Promise<User> {
-        return this.userRepository.findOne({where: {login}})
+        return this.userRepository.findOne({
+            where: {login}, relations: {
+                rights: true
+            }
+        })
     }
 
     async validateUser(login: string, password: string): Promise<User> {
         //generate hash in order to compare with the one stored in DB
         let hash = this.passwordService.hash(password)
-        return this.userRepository.findOne({where: {login, hash}})
+        return this.userRepository.findOne({
+            where: {login, hash}, relations: {
+                rights: true
+            }
+        })
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {

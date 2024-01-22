@@ -1,17 +1,19 @@
 import {Controller, Get, HttpCode, HttpException, HttpStatus} from "@nestjs/common";
 import {AppService} from './app.service';
+import {Public} from "./decorators/public/public.decorator";
 
 @Controller("/health")
 export class AppController {
     constructor(private readonly appService: AppService) {
     }
 
-
+    @Public()
     @Get()
     health(): string {
         return "ok"
     }
 
+    @Public()
     @Get("/liveness")
     @HttpCode(200)
     async liveness() {
@@ -20,6 +22,7 @@ export class AppController {
         }
     }
 
+    @Public()
     @Get("/readiness")
     @HttpCode(200)
     async readiness() {
@@ -28,6 +31,7 @@ export class AppController {
         }
     }
 
+    @Public()
     @Get("/probeness")
     @HttpCode(200)
     async probeness() {

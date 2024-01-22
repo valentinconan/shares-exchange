@@ -7,10 +7,6 @@ export class OrderDto {
 
     @IsString()
     @IsNotEmpty()
-    shareHolderLogin: string
-
-    @IsString()
-    @IsNotEmpty()
     shareName: string
 
 }
