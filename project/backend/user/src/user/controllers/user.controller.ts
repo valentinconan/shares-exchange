@@ -15,12 +15,12 @@ export class UserController {
     @Roles(Role.admin)
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
-// todo manage error
+
         let user: User = await this.userService.create(createUserDto);
 
         //remove sensitive data from response
-        delete user.hash
-        delete user.id
+        delete user?.hash
+        delete user?.id
 
         return user;
     }
@@ -30,8 +30,8 @@ export class UserController {
     async findAll() {
         let users = await this.userService.findAll();
         users.forEach((user) => {
-            delete user.hash
-            delete user.id
+            delete user?.hash
+            delete user?.id
         })
         return users
     }
@@ -41,8 +41,8 @@ export class UserController {
     async findOne(@Param('name') name: string) {
 
         let user = await this.userService.findOne(name);
-        delete user.hash
-        delete user.id
+        delete user?.hash
+        delete user?.id
         return user
     }
 
