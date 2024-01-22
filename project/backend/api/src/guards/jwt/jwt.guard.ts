@@ -18,8 +18,7 @@ export class JwtGuard implements CanActivate {
         const skipAuth = this.reflector.get<boolean>("skip-jwt", context.getHandler());
 
         if (skipAuth) {
-            console.log("skipping Jwtguard")
-            // Exclure cette route du guard
+            // Exclude this call from guard validation
             return true;
         }
 
@@ -56,23 +55,21 @@ export class JwtGuard implements CanActivate {
                 }
             }),
             catchError((error: AxiosError) => {
-                // Traitez ici l'erreur
+                // Managing error...
                 if (error.response) {
-                    // L'appel a été fait et le serveur a répondu avec un code d'erreur
+                    // Call ok but reponse in error
                     console.error('Erreur de réponse:', error.response.data);
                     throw new HttpException('forbidden', 403);
                 } else if (error.request) {
-                    // L'appel a été fait mais aucune réponse n'a été reçue
+                    // Call ok but no response received
                     console.error('Aucune réponse reçue:', error.request);
                     throw new HttpException(error.request.data.error, error.request.status);
                 } else {
-                    // Une erreur s'est produite lors de la configuration de la requête
+                    // Error in request configuration
                     console.error('Erreur de configuration de la requête:', error.message);
                     throw new HttpException('Bad request', 400);
                 }
 
-                // Renvoyer une observable d'erreur pour que le flux puisse être interrompu
-                throw new HttpException('Bad request', 400);
             }),);
     }
 
