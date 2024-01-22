@@ -36,7 +36,11 @@ export class JwtGuard implements CanActivate {
         //then call user module in order to validate token
         return this.validateToken(token).pipe(
             map((isValid) => {
-                return isValid;
+                request.user = {
+                    login: isValid.payload.sub,
+                    roles: isValid.payload.claims
+                };
+                return isValid.valid;
             }),
         );
     }
@@ -45,7 +49,11 @@ export class JwtGuard implements CanActivate {
         //todo vco variabilise url here
         return this.httpService.post("http://localhost:3001/validate-token", {token}).pipe(
             map((response) => {
-                return response.status >= 200 && response.status <= 299 && response.data.valid;
+                if (response.status >= 200 && response.status <= 299 && response.data.valid) {
+                    return response.data
+                } else {
+                    return false
+                }
             }),
             catchError((error: AxiosError) => {
                 // Traitez ici l'erreur
