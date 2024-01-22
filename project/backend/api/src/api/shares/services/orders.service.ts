@@ -72,7 +72,6 @@ export class OrdersService {
                 .where('shareHolder.login = :login', {login: userLogin})
                 .getOne();
 
-            console.log(JSON.stringify(wallet))
             if (!wallet) {
                 wallet = new Wallet();
                 wallet.shareHolder = shareHolder
@@ -83,7 +82,6 @@ export class OrdersService {
                 holding.quantity = orderDto.quantity
 
                 wallet.holdings = [holding]
-                console.log(JSON.stringify(holding))
                 await transactionalEntityManager.save(Wallet, wallet)
             } else {
 
