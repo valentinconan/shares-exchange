@@ -46,7 +46,7 @@ export class JwtGuard implements CanActivate {
 
     private validateToken(token: string) {
         //todo vco variabilise url here
-        return this.httpService.post("http://localhost:3001/validate-token", {token}).pipe(
+        return this.httpService.post("http://user:3000/validate-token", {token}).pipe(
             map((response) => {
                 if (response.status >= 200 && response.status <= 299 && response.data.valid) {
                     return response.data

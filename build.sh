@@ -56,7 +56,10 @@ done
 export excludes
 export delete
 
-echo "Building project..."
+echo "Building projects..."
+
+pushd project/backend/api/ && bash build.sh -sn && popd
+pushd project/backend/user/ && bash build.sh -sn && popd
 
 echo "Create temporary folder $PACKAGE_PATH"
 # clean package
