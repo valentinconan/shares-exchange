@@ -4,11 +4,12 @@ import {Reflector} from "@nestjs/core";
 import {HttpService} from '@nestjs/axios'
 import {catchError, map, Observable} from 'rxjs';
 import {AxiosError} from 'axios';
+import {EnvironmentService} from "../../utils/service/environment/environment.service";
 
 @Injectable()
 export class JwtGuard implements CanActivate {
 
-    constructor(private readonly reflector: Reflector, private readonly httpService: HttpService) {
+    constructor(private readonly reflector: Reflector, private readonly httpService: HttpService, private readonly environmentService: EnvironmentService) {
     }
 
     canActivate(
@@ -35,6 +36,9 @@ export class JwtGuard implements CanActivate {
         //then call user module in order to validate token
         return this.validateToken(token).pipe(
             map((isValid) => {
+                if (!isValid?.valid) {
+                    throw new HttpException('forbidden', 403)
+                }
                 request.user = {
                     login: isValid.payload.sub,
                     roles: isValid.payload.claims
@@ -45,9 +49,10 @@ export class JwtGuard implements CanActivate {
     }
 
     private validateToken(token: string) {
-        //todo vco variabilise url here
-        return this.httpService.post("http://user:3000/validate-token", {token}).pipe(
+
+        return this.httpService.post(`http://${this.environmentService.getOrDefault("USER_HOSTNAME", "user:3000")}/validate-token`, {token}).pipe(
             map((response) => {
+
                 if (response.status >= 200 && response.status <= 299 && response.data.valid) {
                     return response.data
                 } else {
