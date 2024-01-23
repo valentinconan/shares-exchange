@@ -4,7 +4,7 @@ ENV APP_VERSION=$VERSION
 
 RUN apk add gcompat libstdc++
 
-COPY bin/main /native
+COPY bin/api /native
 RUN chmod +x native
 
 CMD ./native
