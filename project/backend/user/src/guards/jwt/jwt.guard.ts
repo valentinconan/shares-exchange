@@ -1,6 +1,6 @@
 import {CanActivate, ExecutionContext, HttpException, Injectable} from '@nestjs/common';
 import {Request} from 'express';
-import {Reflector} from "@nestjs/core";
+import {Reflector} from '@nestjs/core';
 import {HttpService} from '@nestjs/axios'
 import {catchError, map, Observable} from 'rxjs';
 import {AxiosError} from 'axios';
@@ -78,7 +78,7 @@ export class JwtGuard implements CanActivate {
             }),);
     }
 
-    private extractTokenFromHeader(request: Request): string | undefined {
+    private extractTokenFromHeader(request: Request): string {
         const [type, token] = request.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
     }
