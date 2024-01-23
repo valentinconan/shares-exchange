@@ -18,7 +18,20 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "native": "pkg --no-bytecode --public --targets node16-linux-x64 --public-packages '*' --compress brotli --out-path bin dist/src/main.js"
+    "native": "pkg --no-bytecode --public --public-packages '*' --compress brotli ."
+  },
+  "bin": "dist/src/main.js",
+  "pkg": {
+    "assets": [
+      "node_modules/axios/**/*"
+    ],
+    "targets": [
+      "node16-linux-x64"
+    ],
+    "outputPath": "bin",
+    "compress": "brotli",
+    "no-bytecode": true,
+    "public": true
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.1",
