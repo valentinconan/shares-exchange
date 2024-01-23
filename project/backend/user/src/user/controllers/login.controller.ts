@@ -3,6 +3,7 @@ import {LoginDto} from "../dto/login.dto";
 import {UserService} from "../services/user.service";
 import {AuthService} from "../services/auth.service";
 import {Public} from "../../decorators/public/public.decorator";
+import {TokenDto} from "../dto/token.dto";
 
 @Controller('login')
 export class LoginController {
@@ -13,7 +14,7 @@ export class LoginController {
 
     @Public()
     @Post()
-    async login(@Body() login: LoginDto) {
+    async login(@Body() login: LoginDto): Promise<TokenDto> {
 
         let user = await this.userService.validateUser(login.login, login.password)
 
