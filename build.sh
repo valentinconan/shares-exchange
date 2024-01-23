@@ -58,6 +58,11 @@ export delete
 
 echo "Building projects..."
 
+if [[ $(node -v) != v18.16.* ]]; then
+  echo -e "${red}ERROR : Node.js version 18.16.x required.${default}"
+  exit 1
+fi
+
 pushd project/backend/api/ && bash build.sh -sn && popd
 pushd project/backend/user/ && bash build.sh -sn && popd
 

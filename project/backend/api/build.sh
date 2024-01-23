@@ -55,6 +55,11 @@ done
 
 echo -e "${cyan}Building project...${default}"
 
+if [[ $(node -v) != v18.16.* ]]; then
+  echo -e "${red}ERROR : Node.js version 18.16.x required.${default}"
+  exit 1
+fi
+
 npm i
 npm run build
 
