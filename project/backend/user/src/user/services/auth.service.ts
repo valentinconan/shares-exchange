@@ -17,7 +17,7 @@ export class AuthService {
         const payload =
             {
                 sub: user.login,
-                claims: user.rights.map(right => right.name)
+                claims: user?.rights?.map(right => right.name)
             };
         // generate token
         return await this.jwtService.signAsync(payload);
