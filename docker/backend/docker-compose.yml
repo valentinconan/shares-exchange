@@ -27,6 +27,22 @@ services:
       - "3001:3000"
     networks:
       - backend-network
+  api:
+    hostname: api
+    image: valentinconan/share-backend-api-native:master
+    restart: unless-stopped
+    environment:
+      - ENTITY_PATH=dist/**/**/*.entity.ts
+      - DB_URL=postgres://postgres:password@db:5432/nest
+    healthcheck:
+      test: wget -O /dev/null http://localhost:3000/health || exit 1
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3002:3000"
+    networks:
+      - backend-network
 networks:
   backend-network:
     external:
