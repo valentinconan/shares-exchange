@@ -1,6 +1,6 @@
 # SHARES-EXCHANGE
 
-Share exchange allows all employee to consult, buy or sell shares.
+Share exchange allows all employees to view, buy or sell shares.
 
 
 ## prerequisites
@@ -37,8 +37,11 @@ Some of the main features implemented :
 ### Technical stack
 
 Frontend : Not implemented Yet
+
 Backend : NodeJS (Nest.js)
+
 Delivery : Docker images
+
 Database : postgres
 
 ### Security
