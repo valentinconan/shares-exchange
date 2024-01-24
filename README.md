@@ -8,11 +8,13 @@ In order to build properly, node version 18.16 is required
 
 ## How to use it ?
 
-In order to build project, launch the utility script `build.sh` using bash.
+In order to build project, launch the utility script `build.sh` using bash. 
+> bash build.sh
 
 This will build all the applications under the `project` folder and generate a `package` one. 
 
-In this folder, launch the utility script `run.sh` 
+In this folder, launch the utility script `run.sh`
+> bash run.sh up
 
 ## Features
 
