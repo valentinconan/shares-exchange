@@ -12,41 +12,17 @@ run_help() {
   echo ""
   echo "Options : "
   echo -e "\t-h display this help"
-  echo -e "\t-o only build specified stack"
-  echo -e "\t-e exclude specified stack from build"
   echo ""
   echo "Sample"
-  echo -e "\t\"bash build-project.sh\" \tproject will be build"
-  echo -e "\t\"bash build-project.sh -p\" \tproject will be build with CI env var"
+  echo -e "\t\"bash build-project.sh\" \t the solution will be generated"
   exit 0
 }
 
-while getopts ":h:o:e:" option; do
+while getopts ":h" option; do
    case $option in
       h) # display Help
          run_help
          exit;;
-      o) # only
-         echo -e "${yellow}Only build stack \""$OPTARG"\" from command : "${!#}${default}""
-         #base list of all stacks
-         excludes=stacks
-         #exclude parameter from exclude list
-         delete=($OPTARG)
-         for target in "${delete[@]}"; do
-           for i in "${!stacks[@]}"; do
-             if [[ ${stacks[i]} = $target ]]; then
-               unset 'stacks[i]'
-             fi
-           done
-         done
-         #format to flatData
-         excludes=${stacks[*]}
-         echo -e "${yellow}Excluding stack \""$excludes"\"${default}"
-         ;;
-      e) # exclude
-         echo -e "${yellow}Excluding stack \""$OPTARG"\"${!#}${default}"
-         excludes=$OPTARG
-         ;;
       \?) # help
          echo -e "${red}Error: Invalid option. Use -h for help${default}"
          exit;;
