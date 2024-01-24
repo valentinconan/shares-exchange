@@ -1,4 +1,4 @@
-import {Body, Controller, Post} from '@nestjs/common';
+import {Body, Controller, HttpException, Post} from '@nestjs/common';
 import {LoginDto} from "../dto/login.dto";
 import {UserService} from "../services/user.service";
 import {AuthService} from "../services/auth.service";
@@ -22,6 +22,8 @@ export class LoginController {
         if (user) {
             //generate jwt
             jwtToken = await this.authService.generateJwtToken(user);
+        } else {
+            throw new HttpException('Incorrect login or password', 403)
         }
 
         return {token: jwtToken}

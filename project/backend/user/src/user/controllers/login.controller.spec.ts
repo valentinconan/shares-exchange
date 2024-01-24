@@ -9,6 +9,7 @@ import {Right} from "../entities/rights.entity";
 import {PasswordService} from "../../utils/service/password/password.service";
 import {JwtService} from "@nestjs/jwt";
 import {EnvironmentService} from "../../utils/service/environment/environment.service";
+import {HttpException} from "@nestjs/common";
 
 describe('LoginController', () => {
     let controller: LoginController;
@@ -45,8 +46,7 @@ describe('LoginController', () => {
 
         jest.spyOn(userService, 'validateUser').mockResolvedValue(undefined)
 
-        let res = await controller.login(loginDto)
-        expect(res['token']).toBeUndefined();
+        await expect(controller.login(loginDto)).rejects.toThrow(HttpException);
     });
 
     it('should login', async () => {
